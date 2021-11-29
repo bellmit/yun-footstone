@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2021. sunkaiyun1206@163.com.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <artifactId>footstone</artifactId>
+    <groupId>com.yunjia</groupId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>footstone-id-generator</artifactId>
+  <packaging>pom</packaging>
+  <modules>
+    <module>idgenerator-spring-boot-autoconfigure</module>
+    <module>idgenerator-spring-boot-starter</module>
+    <module>idgenerator-spring-boot-test</module>
+  </modules>
+
+
+</project>

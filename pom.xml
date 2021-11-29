@@ -4,17 +4,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.yun.footstone</groupId>
-    <artifactId>yun-footstone</artifactId>
+    <groupId>com.yunjia</groupId>
+    <artifactId>footstone</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <modules>
-        <module>yun-footstone-common</module>
-        <module>yun-footstone-mybatis</module>
+        <module>footstone-common</module>
+        <module>footstone-mybatis</module>
+        <module>footstone-id-generator</module>
     </modules>
 
     <packaging>pom</packaging>
 
-    <name>yun-footstone</name>
+    <name>footstone</name>
     <description>
         基础项目，为springcloud项目提供基础方法，便于快速构建
     </description>
@@ -24,12 +25,12 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <project.release.version>1.0.0-SNAPSHOT</project.release.version>
+        <project.release.version>1.0.0</project.release.version>
 
-        <yun-footstone.version>1.0.0-SNAPSHOT</yun-footstone.version>
+        <footstone.version>1.0.0-SNAPSHOT</footstone.version>
 
         <!-- spring start -->
-        <spring-boot.version>2.4.2</spring-boot.version>
+        <spring-boot.version>2.4.6</spring-boot.version>
         <spring-cloud.version>2020.0.3</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.1</spring-cloud-alibaba.version>
         <spring.version>5.3.3</spring.version>
@@ -61,7 +62,7 @@
         <!-- validator -->
 
         <!--jackson-->
-        <fasterxml.jackson.version>2.9.8</fasterxml.jackson.version>
+        <fasterxml.jackson.version>2.12.3</fasterxml.jackson.version>
         <!--jackson end-->
 
         <!--guava-->
@@ -83,8 +84,14 @@
         <!--log-->
 
         <!-- mybatis-plus -->
-        <mybatis-plus.version>3.1.0</mybatis-plus.version>
+        <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
+        <dynamic-datasource-spring-boot-starter.version>3.4.1</dynamic-datasource-spring-boot-starter.version>
+        <p6spy.version>3.9.1</p6spy.version>
+        <mybatis-plus-generator.version>3.4.1</mybatis-plus-generator.version>
         <!-- mybatis-plus -->
+
+        <swagger.version>2.1.11</swagger.version>
+        <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
 
         <!--plugins version-->
         <plugin.clean.verion>3.0.0</plugin.clean.verion>
@@ -111,13 +118,18 @@
 
     <dependencyManagement>
         <dependencies>
-            <!-- yun start -->
+            <!-- yunjia start -->
             <dependency>
-                <groupId>com.yun.footstone</groupId>
-                <artifactId>yun-footstone-common</artifactId>
-                <version>${yun-footstone.version}</version>
+                <groupId>com.yunjia</groupId>
+                <artifactId>footstone-common</artifactId>
+                <version>${footstone.version}</version>
             </dependency>
-            <!-- yun end -->
+            <dependency>
+                <groupId>com.yunjia</groupId>
+                <artifactId>footstone-mybatis</artifactId>
+                <version>${footstone.version}</version>
+            </dependency>
+            <!-- yunjia end -->
 
             <!--*****************spring cloud alibaba***********************-->
             <dependency>
@@ -145,48 +157,6 @@
                 <scope>import</scope>
             </dependency>
             <!--*****************spring cloud alibaba***********************-->
-
-            <!-- spring start -->
-            <!--<dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>-->
-            <!-- spring end -->
-
-            <!-- 代理相关 start -->
-            <!-- https://mvnrepository.com/artifact/cglib/cglib -->
-            <!--<dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib</artifactId>
-                <version>${cglib.version}</version>
-            </dependency>-->
-            <!-- 代理相关 end -->
-
-            <!--*****************commons***********************-->
-            <!--<dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-pool2</artifactId>
-                <version>${commons.pool2.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons.lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>${commons.codec.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>commons-beanutils</groupId>
-                <artifactId>commons-beanutils</artifactId>
-                <version>${commons.beanutils.version}</version>
-            </dependency>-->
-            <!--******************commons end*******************-->
 
             <!--******************hutool start*******************-->
             <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
@@ -234,53 +204,50 @@
             </dependency>
             <!--*************************json end*********************-->
 
-            <!--<dependency>
-                <groupId>org.projectlombok</groupId>
-                <artifactId>lombok</artifactId>
-                <version>${lombok.version}</version>
-            </dependency>-->
-
-            <!-- httpclient start -->
-            <!--<dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpclient.version}</version>
-            </dependency>-->
-            <!-- httpclient end -->
-
-            <!--log-->
-            <!--***********************log********************-->
-            <!--<dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>jcl-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>log4j-over-slf4j</artifactId>
-                <version>${slf4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.classic.version}</version>
-            </dependency>-->
-            <!--*****************log end*********************-->
-
             <!--*****************mybatis-plus start*********************-->
             <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus -->
+            <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
             <dependency>
                 <groupId>com.baomidou</groupId>
-                <artifactId>mybatis-plus</artifactId>
-                <version>${mybatis-plus.version}</version>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic-datasource-spring-boot-starter.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/p6spy/p6spy -->
+            <dependency>
+                <groupId>p6spy</groupId>
+                <artifactId>p6spy</artifactId>
+                <version>${p6spy.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>1.2.8</version>
             </dependency>
             <!--*****************mybatis-plus end*********************-->
 
+            <!-- https://mvnrepository.com/artifact/com.alibaba/transmittable-thread-local -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${transmittable-thread-local.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
 
             <!--***********************test and mock********************-->
             <dependency>

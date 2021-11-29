@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) 2021. sunkaiyun1206@163.com.
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunjia.footstone.idgenerator.worker.database.mapper.WorkerNodeMapper">
+
+    <resultMap id="workerNodeRes"
+            type="com.yunjia.footstone.idgenerator.worker.database.entity.WorkerNodeEntity">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result column="HOST_NAME" jdbcType="VARCHAR" property="hostName" />
+        <result column="PORT" jdbcType="VARCHAR" property="port" />
+        <result column="TYPE" jdbcType="INTEGER" property="type" />
+        <result column="LAUNCH_DATE" jdbcType="DATE" property="launchDate" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    </resultMap>
+
+	<select id="getWorkerNodeByHostPort" resultMap="workerNodeRes">
+		SELECT
+		ID,
+		HOST_NAME,
+		PORT,
+		TYPE,
+		LAUNCH_DATE,
+		UPDATE_TIME,
+		CREATE_TIME
+		FROM
+		WORKER_NODE
+		WHERE
+		HOST_NAME = #{host} AND PORT = #{port}
+	</select>
+
+    <insert id="addWorkerNode" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.yunjia.footstone.idgenerator.worker.database.entity.WorkerNodeEntity">
+		INSERT INTO WORKER_NODE
+		(HOST_NAME,
+		PORT,
+		TYPE,
+		LAUNCH_DATE,
+		UPDATE_TIME,
+		CREATE_TIME)
+		VALUES (
+		#{hostName},
+		#{port},
+		#{type},
+		#{launchDate},
+		NOW(),
+		NOW())
+	</insert>
+
+</mapper>
