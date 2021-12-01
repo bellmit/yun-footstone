@@ -6,20 +6,19 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>footstone</artifactId>
+        <artifactId>footstone-cache</artifactId>
         <groupId>com.yunjia</groupId>
         <version>1.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>footstone-id-generator</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>cache-spring-boot-starter</artifactId>
 
-    <modules>
-        <module>idgenerator-spring-boot-autoconfigure</module>
-        <module>idgenerator-spring-boot-starter</module>
-        <module>idgenerator-spring-boot-test</module>
-    </modules>
-
-
+    <dependencies>
+        <dependency>
+            <groupId>com.yunjia</groupId>
+            <artifactId>cache-spring-boot-autoconfigure</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

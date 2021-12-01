@@ -1,0 +1,56 @@
+{
+  "groups": [
+    {
+      "name": "spring.cache",
+      "type": "com.yunjia.footstone.redisson.cache.spring.SpringCacheProperties",
+      "sourceType": "com.yunjia.footstone.redisson.cache.spring.SpringCacheProperties"
+    },
+    {
+      "name": "spring.redis.redisson",
+      "type": "com.yunjia.footstone.redisson.client.RedissonProperties",
+      "sourceType": "com.yunjia.footstone.redisson.client.RedissonProperties"
+    },
+    {
+      "name": "spring.redis.redisson.lock",
+      "type": "com.yunjia.footstone.redisson.lock.RedissonLockProperties",
+      "sourceType": "com.yunjia.footstone.redisson.lock.RedissonLockProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "spring.cache.file",
+      "type": "java.lang.String",
+      "description": "配置文件路径",
+      "sourceType": "com.yunjia.footstone.redisson.cache.spring.SpringCacheProperties"
+    },
+    {
+      "name": "spring.redis.redisson.config",
+      "type": "java.lang.String",
+      "sourceType": "com.yunjia.footstone.redisson.client.RedissonProperties"
+    },
+    {
+      "name": "spring.redis.redisson.file",
+      "type": "java.lang.String",
+      "sourceType": "com.yunjia.footstone.redisson.client.RedissonProperties"
+    },
+    {
+      "name": "spring.redis.redisson.lock.lock-prefix",
+      "type": "java.lang.String",
+      "description": "Lock Key Prefix",
+      "sourceType": "com.yunjia.footstone.redisson.lock.RedissonLockProperties"
+    },
+    {
+      "name": "spring.redis.redisson.lock.time-unit",
+      "type": "java.util.concurrent.TimeUnit",
+      "description": "等待时间单位",
+      "sourceType": "com.yunjia.footstone.redisson.lock.RedissonLockProperties"
+    },
+    {
+      "name": "spring.redis.redisson.lock.wait-time",
+      "type": "java.lang.Long",
+      "description": "获取锁等待时间",
+      "sourceType": "com.yunjia.footstone.redisson.lock.RedissonLockProperties"
+    }
+  ],
+  "hints": []
+}

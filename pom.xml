@@ -11,6 +11,8 @@
         <module>footstone-common</module>
         <module>footstone-mybatis</module>
         <module>footstone-id-generator</module>
+        <module>footstone-web</module>
+        <module>footstone-cache</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -92,6 +94,7 @@
 
         <swagger.version>2.1.11</swagger.version>
         <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
+        <redisson.version>3.16.4</redisson.version>
 
         <!--plugins version-->
         <plugin.clean.verion>3.0.0</plugin.clean.verion>
@@ -247,6 +250,18 @@
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+
+            <!-- redisson -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-data-24</artifactId>
+                <version>${redisson.version}</version>
             </dependency>
 
             <!--***********************test and mock********************-->

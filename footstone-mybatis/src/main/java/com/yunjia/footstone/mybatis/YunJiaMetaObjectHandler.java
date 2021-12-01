@@ -6,9 +6,9 @@ package com.yunjia.footstone.mybatis;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
+import com.yunjia.footstone.common.contxt.LocalContextHolder;
+import com.yunjia.footstone.common.contxt.LoginUser;
 import com.yunjia.footstone.common.util.CodeGeneratorUtils;
-import com.yunjia.footstone.mybatis.context.OperatorContext;
-import com.yunjia.footstone.mybatis.context.OperatorDto;
 import com.yunjia.footstone.mybatis.enums.CommonDbColumn;
 import com.yunjia.footstone.mybatis.enums.YesOrNo;
 import java.util.Date;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * 注入默认属性值
  * </p>
+ *
  * @author sunkaiyun
  */
 @Slf4j
@@ -28,7 +29,7 @@ public class YunJiaMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
-        OperatorDto operator = OperatorContext.getOperator();
+        LoginUser loginUser = LocalContextHolder.get().getLoginUser();
         Date now = new Date();
         // 逻辑ID
         if(canSet(metaObject, CommonDbColumn.LOGIC_CODE.getEntityFieldName())) {
@@ -45,52 +46,56 @@ public class YunJiaMetaObjectHandler implements MetaObjectHandler {
             this.strictInsertFill(metaObject, CommonDbColumn.IS_DELETE.getEntityFieldName(), Integer.class,
                     YesOrNo.NO.getCode());
         }
-        // 创建人ID
-        if(canSet(metaObject, CommonDbColumn.CREATE_BY_CODE.getEntityFieldName())) {
-            this.strictInsertFill(metaObject, CommonDbColumn.CREATE_BY_CODE.getEntityFieldName(), String.class,
-                    operator.getOperatorId());
-        }
-        // 创建人姓名
-        if(canSet(metaObject, CommonDbColumn.CREATE_BY_NAME.getEntityFieldName())) {
-            this.strictInsertFill(metaObject, CommonDbColumn.CREATE_BY_NAME.getEntityFieldName(), String.class,
-                    operator.getOperatorName());
-        }
         // 创建时间
         if(canSet(metaObject, CommonDbColumn.CREATE_TIME.getEntityFieldName())) {
             this.strictInsertFill(metaObject, CommonDbColumn.CREATE_TIME.getEntityFieldName(), Date.class, now);
-        }
-        // 修改人ID
-        if(canSet(metaObject, CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName())) {
-            this.strictInsertFill(metaObject, CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName(), String.class,
-                    operator.getOperatorId());
-        }
-        // 修改人姓名
-        if(canSet(metaObject, CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName())) {
-            this.strictInsertFill(metaObject, CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName(), String.class,
-                    operator.getOperatorName());
         }
         // 更新时间
         if(canSet(metaObject, CommonDbColumn.UPDATE_TIME.getEntityFieldName())) {
             this.strictInsertFill(metaObject, CommonDbColumn.UPDATE_TIME.getEntityFieldName(), Date.class, now);
         }
+        if(ObjectUtil.isNotNull(loginUser)) {
+            // 创建人ID
+            if(canSet(metaObject, CommonDbColumn.CREATE_BY_CODE.getEntityFieldName())) {
+                this.strictInsertFill(metaObject, CommonDbColumn.CREATE_BY_CODE.getEntityFieldName(), String.class,
+                        loginUser.getUserCode());
+            }
+            // 创建人姓名
+            if(canSet(metaObject, CommonDbColumn.CREATE_BY_NAME.getEntityFieldName())) {
+                this.strictInsertFill(metaObject, CommonDbColumn.CREATE_BY_NAME.getEntityFieldName(), String.class,
+                        loginUser.getNickname());
+            }
+            // 修改人ID
+            if(canSet(metaObject, CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName())) {
+                this.strictInsertFill(metaObject, CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName(), String.class,
+                        loginUser.getUserCode());
+            }
+            // 修改人姓名
+            if(canSet(metaObject, CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName())) {
+                this.strictInsertFill(metaObject, CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName(), String.class,
+                        loginUser.getNickname());
+            }
+        }
     }
 
     @Override
     public void updateFill(MetaObject metaObject) {
-        OperatorDto operator = OperatorContext.getOperator();
+        LoginUser loginUser = LocalContextHolder.get().getLoginUser();
         Date now = new Date();
         if(metaObject.hasSetter(CommonDbColumn.UPDATE_TIME.getEntityFieldName())) {
             this.setFieldValByName(CommonDbColumn.UPDATE_TIME.getEntityFieldName(), now, metaObject);
         }
-        // 修改人ID
-        if(metaObject.hasSetter(CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName())) {
-            this.setFieldValByName(CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName(), operator.getOperatorName(),
-                    metaObject);
-        }
-        // 修改人姓名
-        if(metaObject.hasSetter(CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName())) {
-            this.setFieldValByName(CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName(), operator.getOperatorName(),
-                    metaObject);
+        if(ObjectUtil.isNotNull(loginUser)) {
+            // 修改人ID
+            if(metaObject.hasSetter(CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName())) {
+                this.setFieldValByName(CommonDbColumn.UPDATE_BY_CODE.getEntityFieldName(), loginUser.getUserCode(),
+                        metaObject);
+            }
+            // 修改人姓名
+            if(metaObject.hasSetter(CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName())) {
+                this.setFieldValByName(CommonDbColumn.UPDATE_BY_NAME.getEntityFieldName(), loginUser.getNickname(),
+                        metaObject);
+            }
         }
     }
 

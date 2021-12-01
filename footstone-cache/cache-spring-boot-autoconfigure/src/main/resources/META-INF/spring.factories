@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.yunjia.footstone.redisson.client.RedissonClientAutoConfigure,\
+  com.yunjia.footstone.redisson.cache.spring.SpringCacheAutoConfigure,\
+  com.yunjia.footstone.redisson.cache.RedissonCacheAutoConfigure,\
+  com.yunjia.footstone.redisson.lock.RedissonLockAutoConfigure

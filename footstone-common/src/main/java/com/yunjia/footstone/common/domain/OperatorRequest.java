@@ -3,6 +3,7 @@
  */
 package com.yunjia.footstone.common.domain;
 
+import com.yunjia.footstone.common.contxt.LocalContextHolder;
 import io.swagger.v3.oas.annotations.media.Schema;
 import javax.validation.constraints.NotNull;
 import lombok.*;
@@ -28,15 +29,15 @@ public class OperatorRequest extends BaseRequest {
 
     @NotBlank(message = "操作人系统号不允许为空")
     @Schema(description = "操作人员ID")
-    protected String operatorCode;
+    protected String operatorCode = LocalContextHolder.get().getLoginUser().getUserCode();
 
     @NotBlank(message = "操作人姓名不允许为空")
     @Schema(description = "操作人员姓名")
-    protected String operatorName;
+    protected String operatorName = LocalContextHolder.get().getLoginUser().getNickname();
 
     @NotNull(message = "操作人类型不允许为空")
-    @Schema(description = "处理人类型 OperatorTypeEnum 1：客户 5：内部员工 10：供应商 15：服务者")
-    protected Integer operatorType;
+    @Schema(description = "处理人类型 LoginUserTypeEnum 1：客户 5：内部员工 10：供应商 15：服务者")
+    protected Integer operatorType = LocalContextHolder.get().getLoginUser().getUserType();
 
     public OperatorRequest(String operatorCode,String operatorName,String traceId){
         this.operatorCode = operatorCode;

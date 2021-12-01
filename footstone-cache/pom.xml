@@ -12,13 +12,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>footstone-id-generator</artifactId>
+    <artifactId>footstone-cache</artifactId>
     <packaging>pom</packaging>
-
     <modules>
-        <module>idgenerator-spring-boot-autoconfigure</module>
-        <module>idgenerator-spring-boot-starter</module>
-        <module>idgenerator-spring-boot-test</module>
+        <module>cache-spring-boot-autoconfigure</module>
+        <module>cache-spring-boot-starter</module>
+        <module>cache-spring-boot-test</module>
     </modules>
 
 
