@@ -95,6 +95,7 @@
         <swagger.version>2.1.11</swagger.version>
         <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
         <redisson.version>3.16.4</redisson.version>
+        <caffeine.version>3.0.4</caffeine.version>
 
         <!--plugins version-->
         <plugin.clean.verion>3.0.0</plugin.clean.verion>
@@ -264,6 +265,12 @@
                 <version>${redisson.version}</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine -->
+            <dependency>
+                <groupId>com.github.ben-manes.caffeine</groupId>
+                <artifactId>caffeine</artifactId>
+                <version>${caffeine.version}</version>
+            </dependency>
             <!--***********************test and mock********************-->
             <dependency>
                 <groupId>junit</groupId>

@@ -21,7 +21,7 @@ import org.redisson.api.RSet;
  * @author sunkaiyun
  * @date 2021/11/30 5:24 PM
  */
-public class CacheUtil implements Cache {
+public class CacheUtil {
 
     private static Cache cache;
 
@@ -37,8 +37,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> void set(String key, V object, long timeToLive, TimeUnit timeUnit) {
+    public static <V> void set(String key, V object, long timeToLive, TimeUnit timeUnit) {
         cache.set(key, object, timeToLive, timeUnit);
     }
 
@@ -49,8 +48,7 @@ public class CacheUtil implements Cache {
      *
      * @return Cache Value
      */
-    @Override
-    public <V> V get(String key) {
+    public static <V> V get(String key) {
         return cache.get(key);
     }
 
@@ -62,8 +60,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <K, V> void putMap(String cacheKey, Map<K, V> mapValue, long timeToLive, TimeUnit timeUnit) {
+    public static <K, V> void putMap(String cacheKey, Map<K, V> mapValue, long timeToLive, TimeUnit timeUnit) {
         cache.putMap(cacheKey, mapValue, timeToLive, timeUnit);
     }
 
@@ -76,8 +73,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <K, V> V putMap(String cacheKey, K mapKey, V mapValue, long timeToLive, TimeUnit timeUnit) {
+    public static <K, V> V putMap(String cacheKey, K mapKey, V mapValue, long timeToLive, TimeUnit timeUnit) {
         return cache.putMap(cacheKey, mapKey, mapValue, timeToLive, timeUnit);
     }
 
@@ -90,8 +86,7 @@ public class CacheUtil implements Cache {
      *
      * @return RMap
      */
-    @Override
-    public <K, V> RMap<K, V> getRMap(String cacheKey, long timeToLive, TimeUnit timeUnit) {
+    public static <K, V> RMap<K, V> getRMap(String cacheKey, long timeToLive, TimeUnit timeUnit) {
         return cache.getRMap(cacheKey, timeToLive, timeUnit);
     }
 
@@ -100,8 +95,7 @@ public class CacheUtil implements Cache {
      *
      * @param cacheKey Cache Key
      */
-    @Override
-    public <K, V> Map<K, V> getMap(String cacheKey) {
+    public static <K, V> Map<K, V> getMap(String cacheKey) {
         return cache.getMap(cacheKey);
     }
 
@@ -111,8 +105,7 @@ public class CacheUtil implements Cache {
      * @param cacheKey Cache Key
      * @param mapKeys  mapKey 集合
      */
-    @Override
-    public <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys) {
+    public static <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys) {
         return cache.getMap(cacheKey, mapKeys);
     }
 
@@ -122,8 +115,7 @@ public class CacheUtil implements Cache {
      * @param cacheKey Cache Key
      * @param mapKey   Map Key
      */
-    @Override
-    public <K, V> V removeMap(String cacheKey, K mapKey) {
+    public static <K, V> V removeMap(String cacheKey, K mapKey) {
         return cache.removeMap(cacheKey, mapKey);
     }
 
@@ -133,8 +125,7 @@ public class CacheUtil implements Cache {
      * @param cacheKey Cache Key
      * @param mapKeys  Map Key集合
      */
-    @Override
-    public <K, V> long removeMap(String cacheKey, K... mapKeys) {
+    public static <K, V> long removeMap(String cacheKey, K... mapKeys) {
         return cache.removeMap(cacheKey, mapKeys);
     }
 
@@ -143,8 +134,7 @@ public class CacheUtil implements Cache {
      *
      * @param cacheKey Cache Key
      */
-    @Override
-    public <K, V> void clearMap(String cacheKey) {
+    public static <K, V> void clearMap(String cacheKey) {
         cache.clearMap(cacheKey);
     }
 
@@ -156,8 +146,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> boolean addList(String key, List<V> list, long timeToLive, TimeUnit timeUnit) {
+    public static <V> boolean addList(String key, List<V> list, long timeToLive, TimeUnit timeUnit) {
         return cache.addList(key, list, timeToLive, timeUnit);
     }
 
@@ -169,8 +158,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> boolean addList(String key, V value, long timeToLive, TimeUnit timeUnit) {
+    public static <V> boolean addList(String key, V value, long timeToLive, TimeUnit timeUnit) {
         return cache.addList(key, value, timeToLive, timeUnit);
     }
 
@@ -181,8 +169,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> RList<V> getRList(String key, long timeToLive, TimeUnit timeUnit) {
+    public static <V> RList<V> getRList(String key, long timeToLive, TimeUnit timeUnit) {
         return cache.getRList(key, timeToLive, timeUnit);
     }
 
@@ -191,8 +178,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public <V> List<V> getList(String key) {
+    public static <V> List<V> getList(String key) {
         return cache.getList(key);
     }
 
@@ -201,8 +187,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public <V> void clearList(String key) {
+    public static <V> void clearList(String key) {
         cache.clearList(key);
     }
 
@@ -214,8 +199,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> boolean addSet(String key, V value, long timeToLive, TimeUnit timeUnit) {
+    public static <V> boolean addSet(String key, V value, long timeToLive, TimeUnit timeUnit) {
         return cache.addSet(key, value, timeToLive, timeUnit);
     }
 
@@ -227,8 +211,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> boolean addSet(String key, Set<V> setValue, long timeToLive, TimeUnit timeUnit) {
+    public static <V> boolean addSet(String key, Set<V> setValue, long timeToLive, TimeUnit timeUnit) {
         return cache.addSet(key, setValue, timeToLive, timeUnit);
     }
 
@@ -239,8 +222,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public <V> RSet<V> getRSet(String key, long timeToLive, TimeUnit timeUnit) {
+    public static <V> RSet<V> getRSet(String key, long timeToLive, TimeUnit timeUnit) {
         return cache.getRSet(key, timeToLive, timeUnit);
     }
 
@@ -249,8 +231,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public <V> Set<V> getSet(String key) {
+    public static <V> Set<V> getSet(String key) {
         return cache.getSet(key);
     }
 
@@ -259,8 +240,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public <V> void clearSet(String key) {
+    public static <V> void clearSet(String key) {
         cache.clearSet(key);
     }
 
@@ -270,8 +250,7 @@ public class CacheUtil implements Cache {
      * @param key   Cache Key
      * @param value Set Value
      */
-    @Override
-    public <V> boolean addSortedSet(String key, V value) {
+    public static <V> boolean addSortedSet(String key, V value) {
         return cache.addSortedSet(key, value);
     }
 
@@ -282,8 +261,7 @@ public class CacheUtil implements Cache {
      * @param value      Set Value
      * @param comparator 比较器
      */
-    @Override
-    public <V> boolean addSortedSet(String key, V value, Comparator comparator) {
+    public static <V> boolean addSortedSet(String key, V value, Comparator comparator) {
         return cache.addSortedSet(key, value, comparator);
     }
 
@@ -293,8 +271,7 @@ public class CacheUtil implements Cache {
      * @param key      Cache Key
      * @param setValue Set Value
      */
-    @Override
-    public <V> boolean addSortedSet(String key, Set<V> setValue) {
+    public static <V> boolean addSortedSet(String key, Set<V> setValue) {
         return cache.addSortedSet(key, setValue);
     }
 
@@ -305,8 +282,7 @@ public class CacheUtil implements Cache {
      * @param setValue   Set Value
      * @param comparator 比较器
      */
-    @Override
-    public <V> boolean addSortedSet(String key, Set<V> setValue, Comparator comparator) {
+    public static <V> boolean addSortedSet(String key, Set<V> setValue, Comparator comparator) {
         return cache.addSortedSet(key, setValue, comparator);
     }
 
@@ -316,8 +292,7 @@ public class CacheUtil implements Cache {
      * @param key   Cache Key
      * @param value SortedSet Entity
      */
-    @Override
-    public <V> boolean removeSortedSet(String key, V value) {
+    public static <V> boolean removeSortedSet(String key, V value) {
         return cache.removeSortedSet(key, value);
     }
 
@@ -327,8 +302,7 @@ public class CacheUtil implements Cache {
      * @param key      Cache Key
      * @param setValue SortedSet Entity Collection
      */
-    @Override
-    public <V> boolean removeSortedSet(String key, Set<V> setValue) {
+    public static <V> boolean removeSortedSet(String key, Set<V> setValue) {
         return cache.removeSortedSet(key, setValue);
     }
 
@@ -337,8 +311,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public <V> void clearSortedSet(String key) {
+    public static <V> void clearSortedSet(String key) {
         cache.clearSortedSet(key);
     }
 
@@ -350,8 +323,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public void setBitSet(String key, long bitIndex, long timeToLive, TimeUnit timeUnit) {
+    public static void setBitSet(String key, long bitIndex, long timeToLive, TimeUnit timeUnit) {
         cache.setBitSet(key, bitIndex, timeToLive, timeUnit);
     }
 
@@ -364,8 +336,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public void setBitSet(String key, long bitIndex, boolean value, long timeToLive, TimeUnit timeUnit) {
+    public static void setBitSet(String key, long bitIndex, boolean value, long timeToLive, TimeUnit timeUnit) {
         cache.setBitSet(key, bitIndex, value, timeToLive, timeUnit);
     }
 
@@ -378,8 +349,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public void setBitSet(String key, long fromIndex, long toIndex, long timeToLive, TimeUnit timeUnit) {
+    public static void setBitSet(String key, long fromIndex, long toIndex, long timeToLive, TimeUnit timeUnit) {
         cache.setBitSet(key, fromIndex, toIndex, timeToLive, timeUnit);
     }
 
@@ -393,8 +363,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public void setBitSet(String key, long fromIndex, long toIndex, boolean value, long timeToLive, TimeUnit timeUnit) {
+    public static void setBitSet(String key, long fromIndex, long toIndex, boolean value, long timeToLive, TimeUnit timeUnit) {
         cache.setBitSet(key, fromIndex, toIndex, value, timeToLive, timeUnit);
     }
 
@@ -406,8 +375,7 @@ public class CacheUtil implements Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    @Override
-    public void setBitSet(String key, BitSet bitSet, long timeToLive, TimeUnit timeUnit) {
+    public static void setBitSet(String key, BitSet bitSet, long timeToLive, TimeUnit timeUnit) {
         cache.setBitSet(key, bitSet, timeToLive, timeUnit);
     }
 
@@ -416,8 +384,7 @@ public class CacheUtil implements Cache {
      *
      * @param key Cache Key
      */
-    @Override
-    public void clearBitSet(String key) {
+    public static void clearBitSet(String key) {
         cache.clearBitSet(key);
     }
 
@@ -427,8 +394,7 @@ public class CacheUtil implements Cache {
      * @param key      Cache Key
      * @param bitIndex bitIndex
      */
-    @Override
-    public void clearBitSet(String key, long bitIndex) {
+    public static void clearBitSet(String key, long bitIndex) {
         cache.clearBitSet(key, bitIndex);
     }
 
@@ -439,8 +405,7 @@ public class CacheUtil implements Cache {
      * @param fromIndex 起始位（包含）
      * @param toIndex   结束位（不包含）
      */
-    @Override
-    public void clearBitSet(String key, long fromIndex, long toIndex) {
+    public static void clearBitSet(String key, long fromIndex, long toIndex) {
         cache.clearBitSet(key, fromIndex, toIndex);
     }
 
@@ -450,8 +415,7 @@ public class CacheUtil implements Cache {
      * @param key      Cache Key
      * @param bitIndex bitIndex
      */
-    @Override
-    public boolean getBitSet(String key, long bitIndex) {
+    public static boolean getBitSet(String key, long bitIndex) {
         return cache.getBitSet(key, bitIndex);
     }
 
@@ -462,8 +426,8 @@ public class CacheUtil implements Cache {
      *
      * @return BitSet
      */
-    @Override
-    public BitSet getBitSet(String key) {
+    public static BitSet getBitSet(String key) {
         return cache.getBitSet(key);
     }
+
 }
