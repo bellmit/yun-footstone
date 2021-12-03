@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.redisson.api.RList;
 import org.redisson.api.RMap;
 import org.redisson.api.RSet;
+import org.redisson.api.RSortedSet;
 
 /**
  * <p>
@@ -48,8 +49,8 @@ public class CacheUtil {
      *
      * @return Cache Value
      */
-    public static <V> V get(String key) {
-        return cache.get(key);
+    public static <V> V get(String key, Class<V> clazz) {
+        return cache.get(key, clazz);
     }
 
     /**
@@ -86,8 +87,8 @@ public class CacheUtil {
      *
      * @return RMap
      */
-    public static <K, V> RMap<K, V> getRMap(String cacheKey, long timeToLive, TimeUnit timeUnit) {
-        return cache.getRMap(cacheKey, timeToLive, timeUnit);
+    public static <K, V> RMap<K, V> getRMap(String cacheKey, Class<K> clazzK, Class<V> clazzV, long timeToLive, TimeUnit timeUnit) {
+        return cache.getRMap(cacheKey, clazzK, clazzV, timeToLive, timeUnit);
     }
 
     /**
@@ -95,8 +96,8 @@ public class CacheUtil {
      *
      * @param cacheKey Cache Key
      */
-    public static <K, V> Map<K, V> getMap(String cacheKey) {
-        return cache.getMap(cacheKey);
+    public static <K, V> Map<K, V> getMap(String cacheKey, Class<K> clazzK, Class<V> clazzV) {
+        return cache.getMap(cacheKey, clazzK, clazzV);
     }
 
     /**
@@ -105,8 +106,8 @@ public class CacheUtil {
      * @param cacheKey Cache Key
      * @param mapKeys  mapKey 集合
      */
-    public static <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys) {
-        return cache.getMap(cacheKey, mapKeys);
+    public static <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys, Class<K> clazzK, Class<V> clazzV) {
+        return cache.getMap(cacheKey, mapKeys, clazzK, clazzV);
     }
 
     /**
@@ -115,8 +116,8 @@ public class CacheUtil {
      * @param cacheKey Cache Key
      * @param mapKey   Map Key
      */
-    public static <K, V> V removeMap(String cacheKey, K mapKey) {
-        return cache.removeMap(cacheKey, mapKey);
+    public static <K, V> V removeMap(String cacheKey, K mapKey, Class<V> clazzV) {
+        return cache.removeMap(cacheKey, mapKey, clazzV);
     }
 
     /**
@@ -169,8 +170,8 @@ public class CacheUtil {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    public static <V> RList<V> getRList(String key, long timeToLive, TimeUnit timeUnit) {
-        return cache.getRList(key, timeToLive, timeUnit);
+    public static <V> RList<V> getRList(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit) {
+        return cache.getRList(key, clazz, timeToLive, timeUnit);
     }
 
     /**
@@ -178,8 +179,8 @@ public class CacheUtil {
      *
      * @param key Cache Key
      */
-    public static <V> List<V> getList(String key) {
-        return cache.getList(key);
+    public static <V> List<V> getList(String key, Class<V> clazz) {
+        return cache.getList(key, clazz);
     }
 
     /**
@@ -222,8 +223,8 @@ public class CacheUtil {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    public static <V> RSet<V> getRSet(String key, long timeToLive, TimeUnit timeUnit) {
-        return cache.getRSet(key, timeToLive, timeUnit);
+    public static <V> RSet<V> getRSet(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit) {
+        return cache.getRSet(key, clazz, timeToLive, timeUnit);
     }
 
     /**
@@ -231,8 +232,8 @@ public class CacheUtil {
      *
      * @param key Cache Key
      */
-    public static <V> Set<V> getSet(String key) {
-        return cache.getSet(key);
+    public static <V> Set<V> getSet(String key, Class<V> clazz) {
+        return cache.getSet(key, clazz);
     }
 
     /**
@@ -284,6 +285,25 @@ public class CacheUtil {
      */
     public static <V> boolean addSortedSet(String key, Set<V> setValue, Comparator comparator) {
         return cache.addSortedSet(key, setValue, comparator);
+    }
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key Cache Key
+     */
+    public <V> RSortedSet getRSortedSet(String key, Class<V> clazz) {
+        return cache.getRSortedSet(key, clazz);
+    }
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key        Cache Key
+     * @param comparator 比较器
+     */
+    public <V> RSortedSet getRSortedSet(String key, Comparator comparator, Class<V> clazz) {
+        return cache.getRSortedSet(key, comparator, clazz);
     }
 
     /**
@@ -429,5 +449,4 @@ public class CacheUtil {
     public static BitSet getBitSet(String key) {
         return cache.getBitSet(key);
     }
-
 }

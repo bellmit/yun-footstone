@@ -12,6 +12,7 @@ import java.util.concurrent.TimeUnit;
 import org.redisson.api.RList;
 import org.redisson.api.RMap;
 import org.redisson.api.RSet;
+import org.redisson.api.RSortedSet;
 
 /**
  * <p>
@@ -40,7 +41,7 @@ public interface Cache {
      *
      * @return Cache Value
      */
-    <V> V get(String key);
+    <V> V get(String key, Class<V> clazz);
 
     /**
      * 缓存Map值
@@ -78,14 +79,14 @@ public interface Cache {
      *
      * @return RMap
      */
-    <K, V> RMap<K, V> getRMap(String cacheKey, long timeToLive, TimeUnit timeUnit);
+    <K, V> RMap<K, V> getRMap(String cacheKey, Class<K> clazzK, Class<V> clazzV, long timeToLive, TimeUnit timeUnit);
 
     /**
      * 获取缓存Map
      *
      * @param cacheKey Cache Key
      */
-    <K, V> Map<K, V> getMap(String cacheKey);
+    <K, V> Map<K, V> getMap(String cacheKey, Class<K> clazzK, Class<V> clazzV);
 
     /**
      * 根据指定mapKey的集合获取Map
@@ -93,7 +94,7 @@ public interface Cache {
      * @param cacheKey Cache Key
      * @param mapKeys  mapKey 集合
      */
-    <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys);
+    <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys, Class<K> clazzK, Class<V> clazzV);
 
     /**
      * 删除Map中的指定值
@@ -101,7 +102,7 @@ public interface Cache {
      * @param cacheKey Cache Key
      * @param mapKey   Map Key
      */
-    <K, V> V removeMap(String cacheKey, K mapKey);
+    <K, V> V removeMap(String cacheKey, K mapKey, Class<V> clazzV);
 
     /**
      * 删除Map中的指定值
@@ -145,14 +146,14 @@ public interface Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    <V> RList<V> getRList(String key, long timeToLive, TimeUnit timeUnit);
+    <V> RList<V> getRList(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit);
 
     /**
      * 获取List
      *
      * @param key Cache Key
      */
-    <V> List<V> getList(String key);
+    <V> List<V> getList(String key, Class<V> clazz);
 
     /**
      * 删除List
@@ -188,14 +189,14 @@ public interface Cache {
      * @param timeToLive 缓存时长
      * @param timeUnit   时长单位
      */
-    <V> RSet<V> getRSet(String key, long timeToLive, TimeUnit timeUnit);
+    <V> RSet<V> getRSet(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit);
 
     /**
      * 获取缓存Set
      *
      * @param key Cache Key
      */
-    <V> Set<V> getSet(String key);
+    <V> Set<V> getSet(String key, Class<V> clazz);
 
     /**
      * 清除Set缓存
@@ -237,6 +238,21 @@ public interface Cache {
      * @param comparator 比较器
      */
     <V> boolean addSortedSet(String key, Set<V> setValue, Comparator comparator);
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key Cache Key
+     */
+    <V> RSortedSet getRSortedSet(String key, Class<V> clazz);
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key        Cache Key
+     * @param comparator 比较器
+     */
+    <V> RSortedSet getRSortedSet(String key, Comparator comparator, Class<V> clazz);
 
     /**
      * 删除缓存元素

@@ -55,7 +55,7 @@ public class RedissonCache implements Cache {
      * @return Cache Value
      */
     @Override
-    public <V> V get(String key) {
+    public <V> V get(String key, Class<V> clazz) {
         RBucket<V> bucket = redissonClient.getBucket(key);
         return bucket.get();
     }
@@ -107,7 +107,8 @@ public class RedissonCache implements Cache {
      * @return RMap
      */
     @Override
-    public <K, V> RMap<K, V> getRMap(String cacheKey, long timeToLive, TimeUnit timeUnit) {
+    public <K, V> RMap<K, V> getRMap(String cacheKey, Class<K> clazzK, Class<V> clazzV, long timeToLive,
+            TimeUnit timeUnit) {
         RMap<K, V> rMap = redissonClient.getMap(cacheKey);
         rMap.expireAsync(timeToLive, timeUnit);
         return rMap;
@@ -119,7 +120,7 @@ public class RedissonCache implements Cache {
      * @param cacheKey Cache Key
      */
     @Override
-    public <K, V> Map<K, V> getMap(String cacheKey) {
+    public <K, V> Map<K, V> getMap(String cacheKey, Class<K> clazzK, Class<V> clazzV) {
         RMap<K, V> rMap = redissonClient.getMap(cacheKey);
         return rMap.readAllMap();
     }
@@ -131,7 +132,7 @@ public class RedissonCache implements Cache {
      * @param mapKeys  mapKey 集合
      */
     @Override
-    public <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys) {
+    public <K, V> Map<K, V> getMap(String cacheKey, Set<K> mapKeys, Class<K> clazzK, Class<V> clazzV) {
         RMap<K, V> rMap = redissonClient.getMap(cacheKey);
         return rMap.getAll(mapKeys);
     }
@@ -143,7 +144,7 @@ public class RedissonCache implements Cache {
      * @param mapKey   Map Key
      */
     @Override
-    public <K, V> V removeMap(String cacheKey, K mapKey) {
+    public <K, V> V removeMap(String cacheKey, K mapKey, Class<V> clazzV) {
         RMap<K, V> rMap = redissonClient.getMap(cacheKey);
         return rMap.remove(mapKey);
     }
@@ -209,7 +210,7 @@ public class RedissonCache implements Cache {
      * @param timeUnit   时长单位
      */
     @Override
-    public <V> RList<V> getRList(String key, long timeToLive, TimeUnit timeUnit) {
+    public <V> RList<V> getRList(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit) {
         RList<V> rList = redissonClient.getList(key);
         rList.expireAsync(timeToLive, timeUnit);
         return rList;
@@ -221,7 +222,7 @@ public class RedissonCache implements Cache {
      * @param key Cache Key
      */
     @Override
-    public <V> List<V> getList(String key) {
+    public <V> List<V> getList(String key, Class<V> clazz) {
         RList<V> rList = redissonClient.getList(key);
         return rList.readAll();
     }
@@ -275,7 +276,7 @@ public class RedissonCache implements Cache {
      * @param timeUnit   时长单位
      */
     @Override
-    public <V> RSet<V> getRSet(String key, long timeToLive, TimeUnit timeUnit) {
+    public <V> RSet<V> getRSet(String key, Class<V> clazz, long timeToLive, TimeUnit timeUnit) {
         RSet<V> rSet = redissonClient.getSet(key);
         rSet.expireAsync(timeToLive, timeUnit);
         return rSet;
@@ -287,7 +288,7 @@ public class RedissonCache implements Cache {
      * @param key Cache Key
      */
     @Override
-    public <V> Set<V> getSet(String key) {
+    public <V> Set<V> getSet(String key, Class<V> clazz) {
         RSet<V> rSet = redissonClient.getSet(key);
         return rSet.readAll();
     }
@@ -325,7 +326,9 @@ public class RedissonCache implements Cache {
     @Override
     public <V> boolean addSortedSet(String key, V value, Comparator comparator) {
         RSortedSet<V> rSortedSet = redissonClient.getSortedSet(key);
-        rSortedSet.trySetComparator(comparator);
+        if(!rSortedSet.isExists()) {
+            rSortedSet.trySetComparator(comparator);
+        }
         return rSortedSet.add(value);
     }
 
@@ -351,8 +354,36 @@ public class RedissonCache implements Cache {
     @Override
     public <V> boolean addSortedSet(String key, Set<V> setValue, Comparator comparator) {
         RSortedSet<V> rSortedSet = redissonClient.getSortedSet(key);
-        rSortedSet.trySetComparator(comparator);
+        if(!rSortedSet.isExists()) {
+            rSortedSet.trySetComparator(comparator);
+        }
         return rSortedSet.addAll(setValue);
+    }
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key Cache Key
+     */
+    @Override
+    public <V> RSortedSet getRSortedSet(String key, Class<V> clazz) {
+        RSortedSet<V> rSortedSet = redissonClient.getSortedSet(key);
+        return rSortedSet;
+    }
+
+    /**
+     * 获取RSortedSet
+     *
+     * @param key        Cache Key
+     * @param comparator 比较器
+     */
+    @Override
+    public <V> RSortedSet getRSortedSet(String key, Comparator comparator, Class<V> clazz) {
+        RSortedSet<V> rSortedSet = redissonClient.getSortedSet(key);
+        if(!rSortedSet.isExists()) {
+            rSortedSet.trySetComparator(comparator);
+        }
+        return rSortedSet;
     }
 
     /**
