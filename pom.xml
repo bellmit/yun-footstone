@@ -44,12 +44,12 @@
             </dependency>
             <dependency>
                 <groupId>com.yunjia</groupId>
-                <artifactId>footstone-cache</artifactId>
+                <artifactId>cache-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.yunjia</groupId>
-                <artifactId>footstone-id-generator</artifactId>
+                <artifactId>idgenerator-spring-boot-starter</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
