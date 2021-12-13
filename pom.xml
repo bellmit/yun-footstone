@@ -22,6 +22,7 @@
         <module>footstone-id-generator</module>
         <module>footstone-web</module>
         <module>footstone-cache</module>
+        <module>footstone-aggregate</module>
     </modules>
 
     <packaging>pom</packaging>
