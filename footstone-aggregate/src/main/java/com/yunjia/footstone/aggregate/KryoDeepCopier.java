@@ -3,6 +3,7 @@
  */
 package com.yunjia.footstone.aggregate;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
 import com.esotericsoftware.kryo.Kryo;
 
 /**
@@ -15,13 +16,17 @@ import com.esotericsoftware.kryo.Kryo;
  */
 public class KryoDeepCopier implements DeepCopier {
 
-    private Kryo kryo = new Kryo();
+    private static final ThreadLocal<Kryo> KRYO_THREAD_LOCAL = new TransmittableThreadLocal<>();
 
     /**
      * 实体深拷贝方法
      */
     @Override
     public <T> T deepClone(T object) {
+        Kryo kryo = KRYO_THREAD_LOCAL.get();
+        if(null == kryo) {
+            KRYO_THREAD_LOCAL.set(new Kryo());
+        }
         return kryo.copy(object);
     }
 }

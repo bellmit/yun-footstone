@@ -21,7 +21,6 @@ import java.util.Set;
 
 /**
  * The Option of DeepEquals
- * @author meixuesong
  */
 public class DeepEqualsOption {
     private boolean ignoreCustomEquals = true;

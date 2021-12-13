@@ -33,8 +33,6 @@ import java.util.Set;
  *         private Double area;
  *     }
  * </code></pre>
- *
- * @author meixuesong
  */
 public class DataObjectUtils {
 

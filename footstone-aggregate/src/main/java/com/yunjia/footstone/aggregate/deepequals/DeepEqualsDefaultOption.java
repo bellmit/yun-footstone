@@ -19,7 +19,6 @@ import java.util.Comparator;
 
 /**
  * The default option for DeepEquals
- * @author meixuesong
  */
 public class DeepEqualsDefaultOption extends DeepEqualsOption {
     /**

@@ -33,7 +33,6 @@ import java.util.function.BiPredicate;
  * Based on the deep equals implementation of https://github.com/jdereg/java-util
  *
  * @author John DeRegnaucourt (john@cedarsoftware.com)
- * @author meixuesong
  */
 public class DeepEquals {
     private DeepEqualsOption deepEqualsOption;
