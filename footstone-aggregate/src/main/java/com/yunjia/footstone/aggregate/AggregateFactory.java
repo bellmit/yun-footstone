@@ -23,15 +23,30 @@ public class AggregateFactory {
      * The factory method.
      *
      * @param root The aggregate root
-     * @param <R> The type of aggregate root
+     * @param <R>  The type of aggregate root
+     *
      * @return the aggregate object
      */
-    public static <R extends BaseRoot> Aggregate<R> createAggregate(R root) {
+    public static <R extends Versionable> Aggregate<R> createAggregate(R root) {
         return new Aggregate<R>(root, copier, new JavaUtilDeepComparator());
     }
 
     /**
+     * The factory method.
+     *
+     * @param root     The aggregate root
+     * @param snapshot The aggregate snapshot
+     * @param <R>      The type of aggregate root
+     *
+     * @return the aggregate object
+     */
+    public static <R extends Versionable> Aggregate<R> createAggregate(R root, R snapshot) {
+        return new Aggregate<R>(root, snapshot, copier, new JavaUtilDeepComparator());
+    }
+
+    /**
      * set deep copier.
+     *
      * @param copier the deepcopier object
      */
     public static void setCopier(DeepCopier copier) {

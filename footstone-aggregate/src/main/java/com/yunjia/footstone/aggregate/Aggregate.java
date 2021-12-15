@@ -5,14 +5,15 @@ package com.yunjia.footstone.aggregate;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.collection.ListUtil;
+import cn.hutool.core.map.MapUtil;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -23,7 +24,7 @@ import java.util.stream.Collectors;
  * @author sunkaiyun
  * @date 2021/12/10 4:30 PM
  */
-public class Aggregate<R extends BaseRoot> {
+public class Aggregate<R extends Versionable> {
 
     /**
      * 聚合根
@@ -56,10 +57,27 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
+     * 构造器
+     */
+    public Aggregate(R root, R snapshot, DeepCopier deepCopier, DeepComparator deepComparator) {
+        this.root = root;
+        this.snapshot = snapshot;
+        this.deepCopier = deepCopier;
+        this.deepComparator = deepComparator;
+    }
+
+    /**
      * 获取聚合根
      */
     public R getRoot() {
         return root;
+    }
+
+    /**
+     * snapshot赋值
+     */
+    public void setSnapshot(R snapshot) {
+        this.snapshot = snapshot;
     }
 
     /**
@@ -76,7 +94,7 @@ public class Aggregate<R extends BaseRoot> {
         if(null == root.getRootVersion()) {
             return Boolean.FALSE;
         }
-        return root.getRootVersion().intValue() == BaseRoot.ROOT_NEW_VERSION;
+        return root.getRootVersion().intValue() == Versionable.ROOT_NEW_VERSION;
     }
 
     /**
@@ -115,7 +133,7 @@ public class Aggregate<R extends BaseRoot> {
     /**
      * 判断值对象是否为新增值对象
      */
-    public <T, ID> boolean isNewValueObject(Function<R, T> getObjectValue, Function<T, ID> getId) {
+    public <T> boolean isNewObjectValue(Function<R, T> getObjectValue) {
         T currentObjectValue = getObjectValue.apply(root);
         T snapshotObjectValue = getObjectValue.apply(snapshot);
         // 原来没有值，现在有值，则值对象为新增值对象
@@ -128,10 +146,10 @@ public class Aggregate<R extends BaseRoot> {
     /**
      * 判断值对象是否变更
      */
-    public <T, ID> boolean isChangedValueObject(Function<R, T> getObjectValue, Function<T, ID> getId) {
+    public <T> boolean isChangedObjectValue(Function<R, T> getObjectValue) {
         T currentObjectValue = getObjectValue.apply(root);
         T snapshotObjectValue = getObjectValue.apply(snapshot);
-        if(null == snapshotObjectValue) {
+        if(null == currentObjectValue || null == snapshotObjectValue) {
             return false;
         }
         return !deepComparator.deepEquals(snapshotObjectValue, currentObjectValue);
@@ -140,7 +158,7 @@ public class Aggregate<R extends BaseRoot> {
     /**
      * 判断值对象是否为已删除的值对象
      */
-    public <T, ID> boolean isDeletedValueObject(Function<R, T> getObjectValue, Function<T, ID> getId) {
+    public <T> boolean isDeletedObjectValue(Function<R, T> getObjectValue) {
         T currentObjectValue = getObjectValue.apply(root);
         T snapshotObjectValue = getObjectValue.apply(snapshot);
         // 原来有值，现在没有值，则值对象为已删除的值对象
@@ -151,15 +169,7 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
-     * 根据给定过滤条件查询聚合根中的值对象属性值
-     */
-    public <T> List<T> findObjectValueList(Function<R, Collection<T>> getObjectCollection, Predicate<T> filter) {
-        Collection<T> collection = getObjectCollection.apply(root);
-        return collection.stream().filter(filter).collect(Collectors.toList());
-    }
-
-    /**
-     * 根据给定过滤条件查询聚合根中的值对象属性值
+     * 查询聚合根中的值对象（集合）中新增的属性值
      */
     public <T, ID> List<T> findNewObjectValueList(Function<R, Collection<T>> getObjectCollection,
             Function<T, ID> getId) {
@@ -171,7 +181,7 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
-     * 遍历快照值对象集合与当前值比较，不同则为已变更的值对象，返回变更后的值对象
+     * 查询聚合根中的值对象（集合）中更新的属性值
      */
     public <T, ID> List<T> findChangedObjectValueList(Function<R, Collection<T>> getObjectCollection,
             Function<T, ID> getId) {
@@ -197,7 +207,7 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
-     * 遍历快照值对象集合与当前值比较，不同则为已变更的值对象，返回变更值对象及原值对象
+     * 查询聚合根中的值对象（集合）中更新的属性值，携带原值
      */
     public <T, ID> List<ChangedObjectValue<T>> findChangedObjectValueListWithOldValue(
             Function<R, Collection<T>> getObjectCollection, Function<T, ID> getId) {
@@ -223,7 +233,7 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
-     * 查询已删除的值对象集合
+     * 查询聚合根中的值对象（集合）中已删除的属性值
      */
     public <T, ID> List<T> findDeletedObjectValueList(Function<R, Collection<T>> getObjectCollection,
             Function<T, ID> getId) {
@@ -243,9 +253,79 @@ public class Aggregate<R extends BaseRoot> {
     }
 
     /**
+     * 查询聚合根中的值对象（Map）中新增的属性值
+     */
+    public <K, T> Map<K, T> findNewObjectValueMap(Function<R, Map<K, T>> getObjectValueMap) {
+        if(isNew()) {
+            return getObjectValueMap.apply(root);
+        } else {
+            return getNewObjectValueMap(getObjectValueMap);
+        }
+    }
+
+    /**
+     * 查询聚合根中的值对象（Map）中更新后的属性值
+     */
+    public <K, T> Map<K, T> findChangedObjectValueMap(Function<R, Map<K, T>> getObjectValueMap) {
+        Map<K, T> currentObjectMap = getObjectValueMap.apply(root);
+        Map<K, T> snapshotObjectMap = getObjectValueMap.apply(snapshot);
+        if(CollUtil.isEmpty(snapshotObjectMap)) {
+            return MapUtil.empty();
+        }
+        // 快照与当前值的交集
+        snapshotObjectMap.keySet().retainAll(currentObjectMap.keySet());
+        Map<K, T> resultMap = new HashMap<>();
+        snapshotObjectMap.forEach((key, value) -> {
+            T currentObjectValue = currentObjectMap.get(key);
+            // 当前值与快照对比，不同则为已更新值对象
+            if(null != currentObjectValue && !deepComparator.deepEquals(currentObjectValue, value)) {
+                resultMap.put(key, currentObjectValue);
+            }
+        });
+        return resultMap;
+    }
+
+    /**
+     * 查询聚合根中的值对象（Map）中更新的属性值，携带原值
+     */
+    public <K, T> Map<K, ChangedObjectValue<T>> findChangedObjectValueMapWithOldValue(
+            Function<R, Map<K, T>> getObjectValueMap) {
+        Map<K, T> currentObjectMap = getObjectValueMap.apply(root);
+        Map<K, T> snapshotObjectMap = getObjectValueMap.apply(snapshot);
+        if(CollUtil.isEmpty(snapshotObjectMap)) {
+            return MapUtil.empty();
+        }
+        // 快照与当前值的交集
+        snapshotObjectMap.keySet().retainAll(currentObjectMap.keySet());
+        Map<K, ChangedObjectValue<T>> resultMap = new HashMap<>();
+        snapshotObjectMap.forEach((key, value) -> {
+            T currentObjectValue = currentObjectMap.get(key);
+            // 当前值与快照对比，不同则为已更新值对象
+            if(null != currentObjectValue && !deepComparator.deepEquals(currentObjectValue, value)) {
+                resultMap.put(key, new ChangedObjectValue(value, currentObjectValue));
+            }
+        });
+        return resultMap;
+    }
+
+    /**
+     * 查询聚合根中的值对象（Map）中已删除的属性值，携带原值
+     */
+    public <K, T> Map<K, T> findDeletedObjectValueMap(Function<R, Map<K, T>> getObjectValueMap) {
+        Map<K, T> currentObjectMap = getObjectValueMap.apply(root);
+        Map<K, T> snapshotObjectMap = getObjectValueMap.apply(snapshot);
+        if(CollUtil.isEmpty(snapshotObjectMap)) {
+            return MapUtil.empty();
+        }
+        // 快照中删除当前集合的值，剩下的为已删除的值
+        snapshotObjectMap.keySet().removeAll(currentObjectMap.keySet());
+        return snapshotObjectMap;
+    }
+
+    /**
      * 当前值对象集合与快照比较，返回新增加的值对象集合
      */
-    public <T, ID> List<T> getNewObjectValueList(Function<R, Collection<T>> getObjectCollection,
+    private <T, ID> List<T> getNewObjectValueList(Function<R, Collection<T>> getObjectCollection,
             Function<T, ID> getId) {
         Collection<T> currentObjectList = getObjectCollection.apply(root);
         Collection<T> snapshotObjectList = getObjectCollection.apply(snapshot);
@@ -264,18 +344,29 @@ public class Aggregate<R extends BaseRoot> {
     /**
      * 遍历值对象集合，并返回值对象ID集合
      */
-    public <T, ID> Set<ID> getObjectValueIds(Collection<T> objectValueList, Function<T, ID> getId) {
+    private <T, ID> Set<ID> getObjectValueIds(Collection<T> objectValueList, Function<T, ID> getId) {
         return objectValueList.stream().map(item -> getId.apply(item)).collect(Collectors.toSet());
     }
 
     /**
-     * 遍历值对象集合，查找指定ID的值对象
+     * 当前值对象Map与快照比较，返回新增加的值对象Map
      */
-    public <T, ID> T getObjectValue(Collection<T> objectValueList, ID id, Function<T, ID> getId) {
-        if(null == id) {
-            return null;
+    private <K, T> Map<K, T> getNewObjectValueMap(Function<R, Map<K, T>> getObjectValueMap) {
+        Map<K, T> currentObjectMap = getObjectValueMap.apply(root);
+        Map<K, T> snapshotObjectMap = getObjectValueMap.apply(snapshot);
+        if(CollUtil.isEmpty(snapshotObjectMap)) {
+            return currentObjectMap;
         }
-        return objectValueList.stream().filter(item -> getId.apply(item).equals(id)).findAny().orElseGet(() -> null);
+
+        Set<K> currentObjectValueKeys = currentObjectMap.keySet();
+        Set<K> snapshotObjectValueKeys = snapshotObjectMap.keySet();
+        // 当前集合删除快照集合，即为新增的数据
+        currentObjectValueKeys.removeAll(snapshotObjectValueKeys);
+        Map<K, T> resultMap = new HashMap<>();
+        for(K key : currentObjectValueKeys) {
+            resultMap.put(key, currentObjectMap.get(key));
+        }
+        return resultMap;
     }
 
 }
