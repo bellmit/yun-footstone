@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright (c) 2021. sunkaiyun1206@163.com.
+  ~ Copyright (c) 2022. sunkaiyun1206@163.com.
   -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>footstone-auth</artifactId>
+        <artifactId>footstone-auth-plugin</artifactId>
         <groupId>com.yunjia</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>footstone-auth-starter</artifactId>
-    <packaging>pom</packaging>
-    <modules>
-        <module>footstone-auth-servlet</module>
-        <module>footstone-auth-spring-boot-starter</module>
-        <module>footstone-auth-reactor-spring-boot-starter</module>
-    </modules>
+    <artifactId>footstone-auth-jwt</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <!-- Auth Core -->
+        <dependency>
+            <groupId>com.yunjia</groupId>
+            <artifactId>footstone-auth-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.yunjia.footstone.auth.reactor.starter.spring.AuthBeanRegister,\
+com.yunjia.footstone.auth.reactor.starter.spring.AuthBeanInject,\
+com.yunjia.footstone.auth.reactor.starter.spring.oauth2.OAuth2BeanRegister,\
+com.yunjia.footstone.auth.reactor.starter.spring.oauth2.OAuth2BeanInject

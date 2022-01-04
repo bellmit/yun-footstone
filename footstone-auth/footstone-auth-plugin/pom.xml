@@ -17,6 +17,7 @@
     <modules>
         <module>footstone-auth-persistent-redis</module>
         <module>footstone-auth-oauth2</module>
+        <module>footstone-auth-jwt</module>
     </modules>
 
 

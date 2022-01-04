@@ -94,6 +94,16 @@ public class AuthConstant {
     public static final String PROP_PREFIX_TOKEN = "footstone.auth.token";
 
     /**
+     * SSO配置前缀
+     */
+    public static final String PROP_PREFIX_SSO = "footstone.auth.token.sso";
+
+    /**
+     * COOKIE配置前缀
+     */
+    public static final String PROP_PREFIX_COOKIE = "footstone.auth.token.cookie";
+
+    /**
      * OAuth2配置前缀
      */
     public static final String PROP_PREFIX_OAUTH2 = "footstone.auth.oauth2";
