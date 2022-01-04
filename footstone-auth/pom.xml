@@ -12,13 +12,17 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>footstone-cache</artifactId>
+    <artifactId>footstone-auth</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>footstone-cache-spring-boot-autoconfigure</module>
-        <module>footstone-cache-spring-boot-starter</module>
-        <module>footstone-cache-spring-boot-test</module>
+        <module>footstone-auth-core</module>
+        <module>footstone-auth-plugin</module>
+        <module>footstone-auth-starter</module>
     </modules>
 
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
 </project>

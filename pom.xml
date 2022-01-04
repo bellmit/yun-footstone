@@ -19,10 +19,11 @@
     <modules>
         <module>footstone-common</module>
         <module>footstone-mybatis</module>
-        <module>footstone-id-generator</module>
+        <module>footstone-uid-generator</module>
         <module>footstone-web</module>
         <module>footstone-cache</module>
         <module>footstone-aggregate</module>
+        <module>footstone-auth</module>
     </modules>
 
     <packaging>pom</packaging>
